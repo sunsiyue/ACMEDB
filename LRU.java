@@ -1,6 +1,7 @@
 package org.apache.derby.impl.services.cache;
 
 final class LRU extends Policy{
+	
 	LRU(int maxSize) {
 		super(maxSize);
 		// TODO Auto-generated constructor stub
