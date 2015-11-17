@@ -13,7 +13,7 @@ final class FIFO extends Policy {
 	}
 
 	synchronized CacheEntry findVictim(boolean forUncache) {
-		Item victim = findMin();
+		Item victim = findMin(); //find the entry with lowest priority
 		if (forUncache)
 			entries.remove(victim);
 		return victim.entry;

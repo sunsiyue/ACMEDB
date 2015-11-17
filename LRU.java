@@ -1,7 +1,6 @@
 package org.apache.derby.impl.services.cache;
 
 final class LRU extends Policy{
-	
 	LRU(int maxSize) {
 		super(maxSize);
 		// TODO Auto-generated constructor stub
@@ -21,11 +20,7 @@ final class LRU extends Policy{
 
 	void incrHit(CacheEntry e) {
 		count++;
-		if (count == 2) {
-			adjustPrio(e, count);
-		}
-
-		
+		adjustPrio(e, count);
 	}
 
 	String Name() {
