@@ -21,7 +21,11 @@ final class LRU extends Policy{
 
 	void incrHit(CacheEntry e) {
 		count++;
-		adjustPrio(e, count);
+		if (count == 2) {
+			adjustPrio(e, count);
+		}
+
+		
 	}
 
 	String Name() {
