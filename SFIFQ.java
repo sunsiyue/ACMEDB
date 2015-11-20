@@ -9,7 +9,6 @@ final class SFIFO extends Policy {
 
 	}
 
-
 	synchronized void addEntry(CacheEntry entry) {
 		count++;
 		entries.add(new Item(entry,(double) count));
