@@ -1,5 +1,5 @@
 package org.apache.derby.impl.services.cache;
-
+//auther: Sun Siyue
 final class LRUK extends Policy{
 	
 	LRUK(int maxSize) {
