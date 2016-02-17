@@ -7,6 +7,8 @@ final class SFIFO extends Policy {
 
 		//todo: init LRU with maxSize * 0.3
 
+		//cougeshu
+
 	}
 
 	synchronized void addEntry(CacheEntry entry) {
