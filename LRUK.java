@@ -1,5 +1,8 @@
 package org.apache.derby.impl.services.cache;
-//auther: Sun Siyue
+// auther: Sun Siyue
+// This will be my very start of the FYP!!
+
+
 final class LRUK extends Policy{
 	
 	LRUK(int maxSize) {
