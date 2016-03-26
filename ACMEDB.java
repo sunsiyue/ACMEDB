@@ -80,10 +80,10 @@ final class ACMEDB implements ReplacementPolicy{
 			expert[count] = new LRFU(maxSize); realCache[count] = new LRFU(maxSize);
 			count++;
 		}
-		if (use_LRUK == 1){
-			expert[count] = new LRUK(maxSize); realCache[count] = new LRUK(maxSize);
-			count++;
-		}
+//		if (use_LRUK == 1){
+//			expert[count] = new LRUK(maxSize); realCache[count] = new LRUK(maxSize);
+//			count++;
+//		}
 		if  (LOG_ENABLED)
 			System.out.println(count +" experts.");
 	}
