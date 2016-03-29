@@ -6,7 +6,6 @@ final class LIFO extends Policy {
 		super(maxSize);
 	}
 
-
 	synchronized void addEntry(CacheEntry entry) {
 		count++;
 		entries.add(new Item(entry,(double) count));

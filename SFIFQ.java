@@ -1,3 +1,4 @@
+//Author: Sun Siyue
 package org.apache.derby.impl.services.cache;
 
 final class SFIFO extends Policy {
@@ -7,7 +8,7 @@ final class SFIFO extends Policy {
 
 		//todo: init LRU with maxSize * 0.3
 
-		//cougeshu
+		//
 
 	}
 
