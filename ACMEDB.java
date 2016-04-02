@@ -30,6 +30,11 @@ final class ACMEDB implements ReplacementPolicy{
 	private final int use_LRFU = 0;
 	//database-specific policies//
 	private final int use_LRUK = 0;
+	private final int use_LFUDA = 0;
+	private final int use_SFIFO = 0;
+	private final int use_LIRS = 0;
+	private final int use_2Q = 0;
+
 	private final int NUM_POLICIES = use_LRU + use_MRU + use_LFU + use_FIFO 
 									+ use_LIFO + use_MFU + use_LFUDA + use_LRFU + use_LRUK;
 	private final ConcurrentCache cacheManager;

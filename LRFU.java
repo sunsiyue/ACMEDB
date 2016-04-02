@@ -1,6 +1,5 @@
 package org.apache.derby.impl.services.cache;
 
-
 final class LRFU extends Policy {
 
 	public LRFU(int maxSize) {
