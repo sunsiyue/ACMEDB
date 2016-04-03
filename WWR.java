@@ -149,4 +149,9 @@ public class WWR extends Algorithm{
 		}
 
 	}
+
+	//***************************************************************
+	//child class functions
+
+
 }

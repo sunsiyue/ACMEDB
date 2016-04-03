@@ -4,13 +4,13 @@ package org.apache.derby.impl.services.cache;
 final class SFIFO extends Policy {
 
 	public SFIFO() {
-		primary = new PriorityQueue();
-		secondary = new PriorityQueue();
+		primary = new ArrayList<Item>;
+		secondary = new ArrayList<Item>;
 	}
 
 	public SFIFO(int maxSize) {
-		primary = new PriorityQueue();
-		secondary = new PriorityQueue();
+		primary = new ArrayList<Item>;
+		secondary = new ArrayList<Item>;
 		p_size = (int) (0.7 * maxSize);
 		s_size = maxSize - p_size; //0.3 of maxSize
 	}
@@ -18,6 +18,14 @@ final class SFIFO extends Policy {
 	synchronized void addEntry(CacheEntry entry) {
 		count++;
 		entries.add(new Item(entry,(double) count));
+//************************************************************
+		count++;
+		AddToPrimary(job);
+		if (primary.getLength() > p_size) {
+			AddToSecondary(RemoveFromPrimary());
+		}
+
+		incrUsed(job.JobSize());
 	}
 
 	synchronized CacheEntry findVictim(boolean forUncache) {
@@ -25,10 +33,38 @@ final class SFIFO extends Policy {
 		if (forUncache)
 			entries.remove(victim);
 		return victim.entry;
+
+//************************************************************
+		return secondary.DequeueFront();
 	}
 
 	void incrHit(CacheEntry e) {
 		count++;
+		//hit++;
+		//byteHit += size;
+
+		for (Item i:primary){
+			if (i.entry == e){
+				prio = i.prio;
+				found = i;
+				break;
+			}
+		}
+		assert (found!= null);
+
+
+		// if (primary.getJob(id)!= null) {
+		// 	return;
+		// }
+
+		AddToPrimary(RemoveFromSecondary(e));
+		if (primary.size() >= p_size) {
+			AddToSecondary(RemoveFromPrimary());
+		}
+
+
+
+
 	}
 
 	String Name() {
@@ -36,18 +72,25 @@ final class SFIFO extends Policy {
 	}
 
 
+	//***************************************************************
+	//child class functions 
+
+	public ArrayList<Item> primary;
+	public ArrayList<Item> secondary;
+
+
 	/* methods for the primary buffer */
 	public void AddToPrimary(Job job){
-		primary.EnqueueJob(0, job);
+		primary.add(0, job);
 
 	}
-	public Job RemoveFromPrimary(){
+	public CacheEntry RemoveFromPrimary(){
 		return primary.DequeueFront();
 
 	}
 
 	/* methods for the secondary buffer */
-	public Job FindInSecondary(int id){
+	public CacheEntry FindInSecondary(int id){
 		return secondary.getJob(id);
 
 	}
@@ -55,12 +98,12 @@ final class SFIFO extends Policy {
 		secondary.EnqueueJob(0, job);
 
 	}
-	public Job RemoveFromSecondary(int id){
+	public CacheEntry RemoveFromSecondary(int id){
 		return secondary.DequeueJob(id);
 
 	}
 
-	public Job getJob(int id){
+	public CacheEntry getJob(int id){
 		Job retJob = null;
 
 		retJob = primary.getJob(id);
@@ -70,7 +113,7 @@ final class SFIFO extends Policy {
 		return retJob;
 
 	}
-	public Job release(int id){
+	public CacheEntry release(int id){
 		Job retjob;
 		retjob = primary.getJob(id);
 		if (retjob!= null) {
