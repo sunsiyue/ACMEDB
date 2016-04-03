@@ -11,7 +11,7 @@ final class LRUK extends Policy{
 		// TODO Auto-generated constructor stub
 
 
-		Hist = new PriorityQueue();
+		Hist = new ArrayList<Item>;
 		CRP = 5000;
 		RIP = 200;
 		trimtime = (int) (System.currentTimeMillis() / 1000L);
@@ -23,11 +23,10 @@ final class LRUK extends Policy{
 		entries.add(new Item(entry, (double) count));
 
 		count++;
-		pq.EnqueueJob((double)count, job);
-		incrUsed(job.JobSize());
-
-		int id = job.JobID();
-		Job histjob = null;
+		//incrUsed(job.JobSize());
+		CacheEntry i = entry;
+		//int id = job.JobID();
+		CacheEntry histjob = null;
 		histjob = Hist.getJob(id);
 
 		if (histjob == null) {
@@ -48,8 +47,8 @@ final class LRUK extends Policy{
 		histjob.k_time[0] = curtime;
 
 		job.last = count;
-		
-		
+
+
 	}
 
 	synchronized CacheEntry findVictim(boolean forUncache) {
@@ -168,7 +167,7 @@ final class LRUK extends Policy{
 		return;
 	}
 
-	public PriorityQueue Hist;
+	public ArrayList<Item> Hist;
 	int CRP, RIP;
 	int trimtime;
 }

@@ -13,7 +13,6 @@ final class LFUDA extends Policy {
 		double prio = 1.0 + L;
 		entries.add(new Item(entry,prio));
 		totalprio+= prio;
-		
 	}
 
 	synchronized CacheEntry findVictim(boolean forUncache) {
