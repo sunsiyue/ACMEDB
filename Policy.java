@@ -36,7 +36,7 @@ public abstract class Policy {
 		this.entries = new ArrayList<Item>();
 		this.count = 0;
 	}
-
+	//abstract functions for policy-specific implementations
 	abstract void addEntry(CacheEntry entry);
 	abstract CacheEntry findVictim(boolean forUncache);
 	abstract void incrHit(CacheEntry e);

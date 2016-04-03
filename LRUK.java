@@ -29,6 +29,33 @@ final class LRUK extends Policy{
 			adjustPrio(e, count);
 		}
 
+
+		count++;
+		hit++;
+		byteHit += size;
+
+		int cprp;
+		Job histjob = Hist.getJob(id), pqjob = pq.getJob(id);
+
+		if (count - pqjob.last > CRP) {
+			cprp = pqjob.last - histjob.k[0];
+			// for (int i=0;i<=1;i++)
+			histjob.k[1] = histjob.k[0] + cprp;
+			histjob.k[0] = count;
+
+			int curtime = (int) (System.currentTimeMillis() / 1000L);;
+
+			histjob.k_time[1] = curtime;
+			histjob.k_time[0] = curtime;
+
+			pqjob.last = count;
+		}
+		else {
+			pqjob.last = count;
+		}
+
+		
+
 	}
 
 	String Name() {

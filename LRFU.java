@@ -19,7 +19,8 @@ final class LRFU extends Policy {
 		Item victim = findMin();
 		if (forUncache)
 			entries.remove(victim);
-		return victim.entry;	}
+		return victim.entry;
+	}
 
 	void incrHit(CacheEntry e) {
 		count++;

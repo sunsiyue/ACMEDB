@@ -10,6 +10,15 @@ final class LIRS extends Policy {
 
 	synchronized void addEntry(CacheEntry entry) {
 		count ++;
+
+		if ()
+
+
+
+
+
+
+
 		double recency = 0.0;
 		Item i = new Item(entry, recency);
 		i.recency = recency;
