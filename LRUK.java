@@ -4,12 +4,9 @@ package org.apache.derby.impl.services.cache;
 final class LRUK extends Policy{
 	private int K_value = 2;
 
-
-
 	LRUK(int maxSize) {
 		super(maxSize);
 		// TODO Auto-generated constructor stub
-
 
 		Hist = new ArrayList<Item>;
 		CRP = 5000;
@@ -47,8 +44,6 @@ final class LRUK extends Policy{
 		histjob.k_time[0] = curtime;
 
 		job.last = count;
-
-
 	}
 
 	synchronized CacheEntry findVictim(boolean forUncache) {
@@ -120,9 +115,6 @@ final class LRUK extends Policy{
 		else {
 			pqjob.last = count;
 		}
-
-		
-
 	}
 
 	String Name() {

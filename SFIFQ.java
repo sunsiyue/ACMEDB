@@ -20,12 +20,17 @@ final class SFIFO extends Policy {
 		entries.add(new Item(entry,(double) count));
 //************************************************************
 		count++;
-		AddToPrimary(job);
-		if (primary.getLength() > p_size) {
-			AddToSecondary(RemoveFromPrimary());
+		//AddToPrimary(entry);
+		// if (primary.size() > p_size) {
+		// 	AddToSecondary(RemoveFromPrimary());
+		// }
+		if (primary.size() < p_size) {
+			AddToPrimary(entry);
+		} else {
+			AddToSecondary(entry);
 		}
 
-		incrUsed(job.JobSize());
+		//incrUsed(job.JobSize());
 	}
 
 	synchronized CacheEntry findVictim(boolean forUncache) {
@@ -35,7 +40,7 @@ final class SFIFO extends Policy {
 		return victim.entry;
 
 //************************************************************
-		return secondary.DequeueFront();
+		//return secondary.DequeueFront();
 	}
 
 	void incrHit(CacheEntry e) {
@@ -50,7 +55,7 @@ final class SFIFO extends Policy {
 				break;
 			}
 		}
-		assert (found!= null);
+		//assert (found!= null);
 
 
 		// if (primary.getJob(id)!= null) {
@@ -80,63 +85,97 @@ final class SFIFO extends Policy {
 
 
 	/* methods for the primary buffer */
-	public void AddToPrimary(Job job){
+	public void AddToPrimary(CacheEntry job){
 		primary.add(0, job);
 
 	}
 	public CacheEntry RemoveFromPrimary(){
-		return primary.DequeueFront();
+		
+		primary.remove();
+
+
+		//return primary.DequeueFront();
 
 	}
 
 	/* methods for the secondary buffer */
-	public CacheEntry FindInSecondary(int id){
+	public Item FindInSecondary(CacheEntry e){
 		return secondary.getJob(id);
-
-	}
-	public void AddToSecondary(Job job){
-		secondary.EnqueueJob(0, job);
-
-	}
-	public CacheEntry RemoveFromSecondary(int id){
-		return secondary.DequeueJob(id);
-
-	}
-
-	public CacheEntry getJob(int id){
-		Job retJob = null;
-
-		retJob = primary.getJob(id);
-		if (retJob == null) {
-			retJob = secondary.getJob(id);
+		Item found = null;
+		for (Item i:entries){
+			if (i.entry == e){
+				found = i;
+				break;
+			}
 		}
-		return retJob;
+		return found;
+	}
+	public void AddToSecondary(CacheEntry e){
+		secondary.add(0, e);
 
 	}
-	public CacheEntry release(int id){
-		Job retjob;
-		retjob = primary.getJob(id);
-		if (retjob!= null) {
-			return primary.DequeueJob(id);
+	public Item RemoveFromSecondary(CacheEntry e){
+		//return secondary.DequeueJob(id);
+		Item found = null;
+		for (Item i:entries){
+			if (i.entry == e){
+				found = i;
+				break;
+			}
+		}
+		secondary.remove(e);
+		return found;
+
+	}
+
+	public Item getJob(CacheEntry e){
+		Item found = null;
+		for (Item i:entries){
+			if (i.entry == e){
+				found = i;
+				break;
+			}
+		}
+
+		return found;
+		// secondary.remove(e);
+		// return found;
+
+
+		// Job retJob = null;
+
+		// retJob = primary.getJob(id);
+		// if (retJob == null) {
+		// 	retJob = secondary.getJob(id);
+		// }
+		// return retJob;
+
+	}
+	public CacheEntry release(CacheEntry e){
+		Item found;
+		found = primary.getJob(e);
+		if (found.entry!= null) {
+			return primary.remove(found);
 		}
 		else {
-			return secondary.DequeueJob(id);
+			return secondary.add(found);
 		}
+		return found;
 	}
-	public void Request(int id){
-		if (secondary.getJob(id) != null) {
-			AddToPrimary(RemoveFromSecondary(id));
-			if (primary.getLength() >= p_size) {
+	public void Request(CacheEntry e){
+		if (secondary.getJob(e) != null) {
+			AddToPrimary(RemoveFromSecondary(e));
+			if (primary.size() >= p_size) {
 				AddToSecondary(RemoveFromPrimary());
 			}
 		}
 		else {
-			Job newjob = new Job(id,0);
-			AddToPrimary(newjob);
-			if (primary.getLength() > p_size) {
+			Item i = new Item(e,0);
+			AddToPrimary(i);
+			if (primary.size() > p_size) {
 				AddToSecondary(RemoveFromPrimary());
-				if (secondary.getLength() > s_size) {
-					secondary.DequeueFront();
+				if (secondary.size() > s_size) {
+					secondary.remove();
 				}
 			}
 		}
